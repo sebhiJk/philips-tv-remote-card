@@ -16,7 +16,6 @@ class philipsTvRemote extends LitElement {
 
         const borderWidth = this.config.dimensions && this.config.dimensions.border_width ? this.config.dimensions.border_width : "1px";
         const scale = this.config.dimensions && this.config.dimensions.scale ? this.config.dimensions.scale : 1;
-        // Breite leicht erhöht, um Platz für 5 Spalten zu schaffen
         const remoteWidth = Math.round(scale * 300) + "px";
 
         const backgroundColor = this.config.colors && this.config.colors.background ? this.config.colors.background : "var( --ha-card-background, var(--card-background-color, white) )";
@@ -33,7 +32,7 @@ class philipsTvRemote extends LitElement {
                 
                   <div class="grid-container-cursor">
                       <div class="shape">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 79"><path d="m 30 15 a 10 10 0 0 1 20 0 a 15 15 0 0 0 15 15 a 10 10 0 0 1 0 20 a 15 15 0 0 0 -15 15 a 10 10 0 0 1 -20 0 a 15 15 0 0 0 -15 -15 a 10 10 0 0 1 0 -20 a 15 15 0 0 0 15 -15" fill="var(--remote-button-color)" stroke="#000000" stroke-width="0" /></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 79"><path d="m 30 15 a 10 10 0 0 1 20 0 a 15 15 0 0 0 15 15 a 10 10 0 0 1 0 20 a 15 15 0 0 0 -15 15 a 10 10 0 0 1 -20 0 a 15 15 0 0 0 -15 -15 a 10 10 0 0 1 0 -20 a 15 15 0 0 0 15 -15" fill="var(--remote-button-color)" stroke="lightgray" stroke-width="1.5" /></svg>
                       </div> 
                       
                       <button class="btn ripple item_vol_up" @click=${() => this._command("VolumeUp")}><ha-icon icon="mdi:plus"/></button>
@@ -42,24 +41,27 @@ class philipsTvRemote extends LitElement {
 
                       <button class="btn ripple item_source" @click=${() => this._command("Source")}><ha-icon icon="mdi:import"/></button>
                       <button class="btn ripple item_power" @click=${() => stateObj.state === 'off' ? this._turn_on() : this._command("PowerOff")}>
-                          <ha-icon icon="mdi:power" style="color: ${stateObj.state === 'off' ? textColor : 'red'};"/>
+                          <ha-icon icon="mdi:power" style="color: red;"/>
                       </button>
                       <button class="btn ripple item_options" @click=${() => this._command("Options")}><ha-icon icon="mdi:format-list-numbered"/></button>
                       <button class="btn ripple item_back" @click=${() => this._command("Back")}><ha-icon icon="mdi:undo-variant"/></button>
 
-                      <button class="btn ripple item_up" style="background-color: transparent;" @click=${() => this._command("CursorUp")}><ha-icon icon="mdi:chevron-up"/></button>
-                      <button class="btn ripple item_left" style="background-color: transparent;" @click=${() => this._command("CursorLeft")}><ha-icon icon="mdi:chevron-left"/></button>
-                      <button class="btn bnt_ok ripple item_ok" style="border: solid 2px ${backgroundColor}" @click=${() => this._command("Confirm")}>OK</button>
-                      <button class="btn ripple item_right" style="background-color: transparent;" @click=${() => this._command("CursorRight")}><ha-icon icon="mdi:chevron-right"/></button>
-                      <button class="btn ripple item_down" style="background-color: transparent;" @click=${() => this._command("CursorDown")}><ha-icon icon="mdi:chevron-down"/></button>
+                      <button class="btn ripple item_up" style="background-color: transparent; color: coral;" @click=${() => this._command("CursorUp")}><ha-icon icon="mdi:chevron-up"/></button>
+                      <button class="btn ripple item_left" style="background-color: transparent; color: coral;" @click=${() => this._command("CursorLeft")}><ha-icon icon="mdi:chevron-left"/></button>
+                      <button class="btn bnt_ok ripple item_ok" style="background-color: transparent; color: coral;" @click=${() => this._command("Confirm")}>OK</button>
+                      <button class="btn ripple item_right" style="background-color: transparent; color: coral;" @click=${() => this._command("CursorRight")}><ha-icon icon="mdi:chevron-right"/></button>
+                      <button class="btn ripple item_down" style="background-color: transparent; color: coral;" @click=${() => this._command("CursorDown")}><ha-icon icon="mdi:chevron-down"/></button>
 
                       <button class="btn ripple item_ch_up" @click=${() => this._command("ChannelStepUp")}><ha-icon icon="mdi:chevron-up"/></button>
                       <button class="btn item_ch_lbl" style="cursor: default;">P</button>
                       <button class="btn ripple item_ch_down" @click=${() => this._command("ChannelStepDown")}><ha-icon icon="mdi:chevron-down"/></button>
+                  
+                      <div class="vol-bg"></div>
+                      <div class="ch-bg"></div>
                   </div>
 
                   <div class="grid-container-home">
-                      <button class="btn ripple" style="width: calc(var(--remotewidth)/6); height: calc(var(--remotewidth)/6);" @click=${() => this._command("Home")}><ha-icon icon="mdi:home"></ha-icon></button>
+                      <button class="btn ripple item_home" style="width: calc(var(--remotewidth)/6); height: calc(var(--remotewidth)/6);" @click=${() => this._command("Home")}><ha-icon icon="mdi:home"></ha-icon></button>
                   </div>
 
                 ${colorButtons ? html`
@@ -129,14 +131,19 @@ class philipsTvRemote extends LitElement {
            width: var(--remotewidth);
            height: calc(var(--remotewidth) * 0.65);
            margin: auto;
+           position: relative;
            grid-template-areas: 
             "vol_up   source   up   power   ch_up"
             "vol_mute left     ok   right   ch_lbl"
             "vol_down options  down back    ch_down";
       }
       
-       /* Der Hintergrund füllt nun die mittleren 3 Spalten aus */
+       /* Steuerkreuz Form */
        .shape { grid-column: 2 / 5; grid-row: 1 / 4; padding: 2px; }
+       
+       /* Overlay Rahmen für Volume und Program (Pillenform) */
+       .vol-bg { grid-row: 1 / 4; grid-column: 1; border: 2px solid lightgray; border-radius: 50px; width: 75%; height: 100%; margin: 0 auto; pointer-events: none; z-index: 2; box-sizing: border-box; }
+       .ch-bg { grid-row: 1 / 4; grid-column: 5; border: 2px solid lightgray; border-radius: 50px; width: 75%; height: 100%; margin: 0 auto; pointer-events: none; z-index: 2; box-sizing: border-box; }
        
        /* Lautstärke-Wippe Links */
        .item_vol_up { grid-area: vol_up; border-radius: 50px 50px 0 0; width: 75%; height: 100%; margin: 0 auto; }
@@ -148,11 +155,11 @@ class philipsTvRemote extends LitElement {
        .item_ch_lbl { grid-area: ch_lbl; border-radius: 0; width: 75%; height: 100%; margin: 0 auto; font-weight: bold; font-size: calc(var(--remotewidth) / 15); }
        .item_ch_down { grid-area: ch_down; border-radius: 0 0 50px 50px; width: 75%; height: 100%; margin: 0 auto; }
 
-       /* Ecken */
-       .item_source { grid-area: source; }
-       .item_power { grid-area: power; }
-       .item_options { grid-area: options; }
-       .item_back { grid-area: back; }
+       /* Ecken - Einzelrahmen hinzufügen */
+       .item_source { grid-area: source; border: 2px solid lightgray; }
+       .item_power { grid-area: power; border: 2px solid lightgray; }
+       .item_options { grid-area: options; border: 2px solid lightgray; }
+       .item_back { grid-area: back; border: 2px solid lightgray; }
 
        /* Steuerkreuz */
        .item_up { grid-area: up; }
@@ -164,6 +171,9 @@ class philipsTvRemote extends LitElement {
        .grid-container-home {
            display: flex; justify-content: center; margin-top: calc(var(--remotewidth) / 15);
        }
+       
+       /* Home Rahmen hinzufügen */
+       .item_home { border: 2px solid lightgray; }
 
         .grid-container-color_btn{
             display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -177,6 +187,7 @@ class philipsTvRemote extends LitElement {
            width: 75%; height: 75%;
            border: 0; border-radius: 50%; margin: auto; cursor: pointer;
            display: flex; justify-content: center; align-items: center;
+           box-sizing: border-box;
       }
        .bnt_ok { width: 95%; height: 95%; font-size: calc(var(--remotewidth) / 16.6); }
        .title { display: block; text-align: center; font-weight: bold; padding-bottom: 5px; }
