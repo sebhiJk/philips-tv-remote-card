@@ -34,28 +34,29 @@ class philipsTvRemote extends LitElement {
                   ? html` <span class="title"> ${this.config.name} </span> `
                   : ""}
                   <div class="grid-container-power"  style="--remotewidth: ${remoteWidth}">
-                      <button class="btn-flat flat-high ripple" @click=${() => this._channelList()}><ha-icon icon="mdi:format-list-numbered"/></button>
+                      <button class="btn-flat flat-high ripple" @click=${() => this._command("Source")}><ha-icon icon="mdi:import"/></button>
+                      <div></div>
                       ${stateObj.state === 'off' ? html`
                       <button class="btn ripple" @click=${() => this._turn_on()}><ha-icon icon="mdi:power" style="color: ${textColor};"/></button>
                       ` : html`
                       <button class="btn ripple" @click=${() => this._command("PowerOff")}><ha-icon icon="mdi:power" style="color: red;"/></button>
                       `}
-                      <button class="btn-flat flat-high ripple" @click=${() => this._command("Back")}><ha-icon icon="mdi:undo-variant"/></button>
                   </div> 
                 
 <div class="grid-container-cursor">
                   <div class="shape">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 79"><path d="m 30 15 a 10 10 0 0 1 20 0 a 15 15 0 0 0 15 15 a 10 10 0 0 1 0 20 a 15 15 0 0 0 -15 15 a 10 10 0 0 1 -20 0 a 15 15 0 0 0 -15 -15 a 10 10 0 0 1 0 -20 a 15 15 0 0 0 15 -15" fill="var(--remote-button-color)" stroke="#000000" stroke-width="0" /></svg>
                     </div> 
+                      <button class="btn ripple item_menu" @click=${() => this._command("Options")}><ha-icon icon="mdi:format-list-numbered"/></button>
                       <button class="btn ripple item_up" style="background-color: transparent;" @click=${() => this._command("CursorUp")}><ha-icon icon="mdi:chevron-up"/></button>
-                      <button class="btn ripple item_input" @click=${() => this._command("Options")}><ha-icon icon="mdi:cog"/></button>
+                      <button class="btn ripple item_input" @click=${() => this._command("Back")}><ha-icon icon="mdi:undo-variant"/></button>
                       
                       <button class="btn ripple item_2_sx" style="background-color: transparent;" @click=${() => this._command("CursorLeft")}><ha-icon icon="mdi:chevron-left"/></button>
                       <button class="btn bnt_ok ripple item_2_c" style="border: solid 2px ${backgroundColor}"  @click=${() => this._command("Confirm")}>OK</button>
                       <button class="btn ripple item_right" style="background-color: transparent;" @click=${() => this._command("CursorRight")}><ha-icon icon="mdi:chevron-right"/></button>
                       
                       <button class="btn ripple item_down" style="background-color: transparent;" @click=${() => this._command("CursorDown")}><ha-icon icon="mdi:chevron-down"/></button>
-                      </div>
+                    </div>
 ${colorButtons ? html`
                   <div class="grid-container-color_btn">
                       <button class="btn-color ripple" style="background-color: red; height: calc(var(--remotewidth) / 12);" @click=${e => this._command("RedColour")}></button>
@@ -70,12 +71,12 @@ ${colorButtons ? html`
                       <button class="btn-flat flat-high ripple" style="margin-top: 0px; height: 50%;" @click=${() => this._command("Home")}><ha-icon icon="mdi:home"></button>
                       <button class="btn ripple" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;" @click=${() => this._command("ChannelStepUp")}><ha-icon icon="mdi:chevron-up"/></button>
                       
-                      <button class="btn" style="border-radius: 0px; cursor: default; margin: 0px auto 0px auto; height: 100%;"><ha-icon icon="${stateObj.attributes.is_volume_muted === true ? 'mdi:volume-off' : 'mdi:volume-high'}"/></button>
-                      <button class="btn ripple" Style="color:${stateObj.attributes.is_volume_muted === true ? 'red' : ''}; height: 100%;"" @click=${() => this._command("Mute")}><span class="${stateObj.attributes.is_volume_muted === true ? 'blink' : ''}"><ha-icon icon="mdi:volume-mute"></span></button>
+                      <button class="btn ripple" style="border-radius: 0px; margin: 0px auto 0px auto; height: 100%; color:${stateObj.attributes.is_volume_muted === true ? 'red' : ''};" @click=${() => this._command("Mute")}><span class="${stateObj.attributes.is_volume_muted === true ? 'blink' : ''}"><ha-icon icon="${stateObj.attributes.is_volume_muted === true ? 'mdi:volume-off' : 'mdi:volume-mute'}"></span></button>
+                      <div></div>
                       <button class="btn" style="border-radius: 0px; cursor: default; margin: 0px auto 0px auto; height: 100%;"><ha-icon icon="mdi:parking"/></button>
                       
                       <button class="btn ripple" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;" @click=${() => this._command("VolumeDown")}><ha-icon icon="mdi:minus"/></button>
-                      <button class="btn-flat flat-high ripple" style="margin-bottom: 0px; height: 50%;" @click=${() => this._command("Source")}><ha-icon icon="mdi:import"/></button>
+                      <div></div>
                       <button class="btn ripple" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;"  @click=${() => this._command("ChannelStepDown")}><ha-icon icon="mdi:chevron-down"/></button>
                   </div>
 
@@ -84,27 +85,6 @@ ${colorButtons ? html`
             `;
     }
 
-    _channelList() {
-        const popupEvent = new Event('ll-custom', {bubbles: true, cancelable: false, composed: true});
-        popupEvent.detail = {
-            "browser_mod": {
-                "service": "browser_mod.popup",
-                "data": {
-                    "content": {
-                        "type": "custom:card-channel-pad",
-                        "entity": this.config.entity,
-                        "remote": this.config.remote,
-                        "channels": this.config.channels
-                    },
-                    "title": " ",
-                    "size": "wide",
-                    "style": "--popup-border-radius: 15px;"
-                }
-            }
-        };
-        this.ownerDocument.querySelector("home-assistant").dispatchEvent(popupEvent);
-    }
-    
     _command(command) {
         this.hass.callService("remote", "send_command", {
             entity_id: this.config.remote,
@@ -217,7 +197,7 @@ ${colorButtons ? html`
            width: var(--remotewidth);
            height: calc(var(--remotewidth) / 1.4);
            overflow: hidden;
-           margin-top: calc(var(--remotewidth) / 12);
+           margin-top: 0px; /* Leerraum entfernt, damit alles nach oben rutscht */
       }
        .shape {
            grid-column-start: 1;
@@ -226,6 +206,7 @@ ${colorButtons ? html`
            grid-row-end: 4;
            padding: 5px;
       }
+       .item_menu { grid-area: menu; }
        .item_up { grid-area: up; }
        .item_input { grid-area: input; }
        .item_2_sx{ grid-area: left; }
