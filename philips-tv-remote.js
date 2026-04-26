@@ -61,7 +61,9 @@ class philipsTvRemote extends LitElement {
                   </div>
 
                   <div class="grid-container-home">
-                      <button class="btn ripple item_home" style="width: calc(var(--remotewidth)/6); height: calc(var(--remotewidth)/6);" @click=${() => this._command("Home")}><ha-icon icon="mdi:home"></ha-icon></button>
+                      <button class="btn ripple item_home" style="width: calc(var(--remotewidth)/5.5); height: calc(var(--remotewidth)/5.5); border: 2px solid lightgray; border-radius: 50%;" @click=${() => this._command("Home")}>
+                          <ha-icon icon="mdi:home"></ha-icon>
+                      </button>
                   </div>
 
                 ${colorButtons ? html`
@@ -129,7 +131,8 @@ class philipsTvRemote extends LitElement {
            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
            grid-template-rows: 1fr 1fr 1fr;
            width: var(--remotewidth);
-           height: calc(var(--remotewidth) * 0.65);
+           /* Höhe weiter reduziert, um der Streckung entgegenzuwirken */
+           height: calc(var(--remotewidth) * 0.55);
            margin: auto;
            position: relative;
            grid-template-areas: 
@@ -138,12 +141,20 @@ class philipsTvRemote extends LitElement {
             "vol_down options  down back    ch_down";
       }
       
-       /* Steuerkreuz Form */
-       .shape { grid-column: 2 / 5; grid-row: 1 / 4; padding: 2px; }
+       /* Steuerkreuz Form: Seitenverhältnis fixiert! */
+       .shape { 
+           grid-column: 2 / 5; grid-row: 1 / 4; 
+           display: flex; align-items: center; justify-content: center; 
+       }
+       .shape svg { 
+           width: 95%; 
+           height: auto; /* Sorgt dafür, dass es proportional bleibt und nicht gestreckt wird */
+           max-height: 85%; /* Verhindert, dass es zu hoch wird */
+       }
        
        /* Overlay Rahmen für Volume und Program (Pillenform) */
-       .vol-bg { grid-row: 1 / 4; grid-column: 1; border: 2px solid lightgray; border-radius: 50px; width: 75%; height: 100%; margin: 0 auto; pointer-events: none; z-index: 2; box-sizing: border-box; }
-       .ch-bg { grid-row: 1 / 4; grid-column: 5; border: 2px solid lightgray; border-radius: 50px; width: 75%; height: 100%; margin: 0 auto; pointer-events: none; z-index: 2; box-sizing: border-box; }
+       .vol-bg { grid-row: 1 / 4; grid-column: 1; border: 2px solid lightgray; border-radius: 50px; width: 85%; height: 95%; align-self: center; justify-self: center; pointer-events: none; z-index: 2; box-sizing: border-box; }
+       .ch-bg { grid-row: 1 / 4; grid-column: 5; border: 2px solid lightgray; border-radius: 50px; width: 85%; height: 95%; align-self: center; justify-self: center; pointer-events: none; z-index: 2; box-sizing: border-box; }
        
        /* Lautstärke-Wippe Links */
        .item_vol_up { grid-area: vol_up; border-radius: 50px 50px 0 0; width: 75%; height: 100%; margin: 0 auto; }
@@ -155,11 +166,20 @@ class philipsTvRemote extends LitElement {
        .item_ch_lbl { grid-area: ch_lbl; border-radius: 0; width: 75%; height: 100%; margin: 0 auto; font-weight: bold; font-size: calc(var(--remotewidth) / 15); }
        .item_ch_down { grid-area: ch_down; border-radius: 0 0 50px 50px; width: 75%; height: 100%; margin: 0 auto; }
 
-       /* Ecken - Einzelrahmen hinzufügen */
-       .item_source { grid-area: source; border: 2px solid lightgray; }
-       .item_power { grid-area: power; border: 2px solid lightgray; }
-       .item_options { grid-area: options; border: 2px solid lightgray; }
-       .item_back { grid-area: back; border: 2px solid lightgray; }
+       /* Basis Button Styles */
+       .btn {
+           background-color: var(--remote-button-color); color: var(--remote-text-color);
+           width: 75%; height: 75%;
+           border: 0; border-radius: 50%; margin: auto; cursor: pointer;
+           display: flex; justify-content: center; align-items: center;
+           box-sizing: border-box;
+      }
+
+       /* Ecken - Einzelrahmen */
+       .btn.item_source { grid-area: source; border: 2px solid lightgray; }
+       .btn.item_power { grid-area: power; border: 2px solid lightgray; }
+       .btn.item_options { grid-area: options; border: 2px solid lightgray; }
+       .btn.item_back { grid-area: back; border: 2px solid lightgray; }
 
        /* Steuerkreuz */
        .item_up { grid-area: up; }
@@ -168,12 +188,10 @@ class philipsTvRemote extends LitElement {
        .item_right { grid-area: right; }
        .item_down { grid-area: down; }
 
+       /* Home Button Bereich */
        .grid-container-home {
-           display: flex; justify-content: center; margin-top: calc(var(--remotewidth) / 15);
+           display: flex; justify-content: center; margin-top: calc(var(--remotewidth) / 12);
        }
-       
-       /* Home Rahmen hinzufügen */
-       .item_home { border: 2px solid lightgray; }
 
         .grid-container-color_btn{
             display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -182,13 +200,6 @@ class philipsTvRemote extends LitElement {
         
        ha-icon { width: calc(var(--remotewidth) / 11); height: calc(var(--remotewidth) / 11); }
        
-       .btn {
-           background-color: var(--remote-button-color); color: var(--remote-text-color);
-           width: 75%; height: 75%;
-           border: 0; border-radius: 50%; margin: auto; cursor: pointer;
-           display: flex; justify-content: center; align-items: center;
-           box-sizing: border-box;
-      }
        .bnt_ok { width: 95%; height: 95%; font-size: calc(var(--remotewidth) / 16.6); }
        .title { display: block; text-align: center; font-weight: bold; padding-bottom: 5px; }
        .btn-color { border-radius: calc(var(--remotewidth) / 10); border: 0; width: 70%; margin: auto; cursor: pointer; }
