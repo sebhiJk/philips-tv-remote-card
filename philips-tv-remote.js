@@ -10,10 +10,6 @@ class philipsTvRemote extends LitElement {
         };
     }
 
-    constructor() {
-        super();
-    }
-
     render() {
         const stateObj = this.hass.states[this.config.entity];
         const colorButtons = this.config.color_buttons === "enable";
@@ -43,7 +39,7 @@ class philipsTvRemote extends LitElement {
                       `}
                   </div> 
                 
-<div class="grid-container-cursor">
+                  <div class="grid-container-cursor">
                   <div class="shape">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 79"><path d="m 30 15 a 10 10 0 0 1 20 0 a 15 15 0 0 0 15 15 a 10 10 0 0 1 0 20 a 15 15 0 0 0 -15 15 a 10 10 0 0 1 -20 0 a 15 15 0 0 0 -15 -15 a 10 10 0 0 1 0 -20 a 15 15 0 0 0 15 -15" fill="var(--remote-button-color)" stroke="#000000" stroke-width="0" /></svg>
                     </div> 
@@ -57,16 +53,17 @@ class philipsTvRemote extends LitElement {
                       
                       <button class="btn ripple item_down" style="background-color: transparent;" @click=${() => this._command("CursorDown")}><ha-icon icon="mdi:chevron-down"/></button>
                     </div>
-${colorButtons ? html`
+
+                ${colorButtons ? html`
                   <div class="grid-container-color_btn">
                       <button class="btn-color ripple" style="background-color: red; height: calc(var(--remotewidth) / 12);" @click=${e => this._command("RedColour")}></button>
                       <button class="btn-color ripple" style="background-color: green; height: calc(var(--remotewidth) / 12);" @click=${e => this._command("GreenColour")}></button>
                       <button class="btn-color ripple" style="background-color: yellow; height: calc(var(--remotewidth) / 12);" @click=${e => this._command("YellowColour")}></button>
                       <button class="btn-color ripple" style="background-color: blue; height: calc(var(--remotewidth) / 12);" @click=${e => this._command("BlueColour")}></button>
                   </div>
-                  ` : html`
-                  `}
-<div class="grid-container-volume-channel-control" >
+                  ` : ""}
+
+                  <div class="grid-container-volume-channel-control" >
                       <button class="btn ripple"  style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;" @click=${() => this._command("VolumeUp")}><ha-icon icon="mdi:plus"/></button>
                       <button class="btn-flat flat-high ripple" style="margin-top: 0px; height: 50%;" @click=${() => this._command("Home")}><ha-icon icon="mdi:home"></button>
                       <button class="btn ripple" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;" @click=${() => this._command("ChannelStepUp")}><ha-icon icon="mdi:chevron-up"/></button>
@@ -79,7 +76,6 @@ ${colorButtons ? html`
                       <div></div>
                       <button class="btn ripple" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;"  @click=${() => this._command("ChannelStepDown")}><ha-icon icon="mdi:chevron-down"/></button>
                   </div>
-
                   </div>
               </div>
             `;
@@ -106,7 +102,7 @@ ${colorButtons ? html`
     }
 
     getCardSize() {
-        return 15;
+        return 10;
     }
 
     static get styles() {
@@ -118,94 +114,38 @@ ${colorButtons ? html`
            transform: translate3d(0, 0, 0);
       }
        .ripple:after {
-           content: "";
-           display: block;
-           position: absolute;
-           border-radius: 50%;
-           width: 100%;
-           height: 100%;
-           top: 0;
-           left: 0;
-           pointer-events: none;
-           background-image: radial-gradient(circle, #7a7f87 2%, transparent 10.01%);
-           background-repeat: no-repeat;
-           background-position: 50%;
-           transform: scale(10, 10);
-           opacity: 0;
-           transition: transform .5s, opacity 1s;
+           content: ""; display: block; position: absolute; border-radius: 50%; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;
+           background-image: radial-gradient(circle, #7a7f87 2%, transparent 10.01%); background-repeat: no-repeat; background-position: 50%;
+           transform: scale(10, 10); opacity: 0; transition: transform .5s, opacity 1s;
       }
-       .ripple:active:after {
-           transform: scale(0, 0);
-           opacity: .3;
-           transition: 0s;
-      }
-       .blink {
-           animation: blinker 1.5s linear infinite;
-           color: red;
-      }
-       @keyframes blinker {
-           50% { opacity: 0; }
-      }
-       .card {
-           display: flex;
-           justify-content: center;
-           width: 100%;
-           height: 100%;
-      }
+       .ripple:active:after { transform: scale(0, 0); opacity: .3; transition: 0s; }
+       .blink { animation: blinker 1.5s linear infinite; color: red; }
+       @keyframes blinker { 50% { opacity: 0; } }
+       .card { display: flex; justify-content: center; width: 100%; height: 100%; }
        .page {
-           background-color: var(--remote-color);
-           height: 100%;
-           display: inline-block;
-           flex-direction: row;
-           border: var(--main-border-width) solid var(--main-border-color);
-           border-radius: calc(var(--remotewidth) / 7.5);
-           padding: calc(var(--remotewidth) / 37.5) calc(var(--remotewidth) / 15.2) calc(var(--remotewidth) / 11) calc(var(--remotewidth) / 15.2);
+           background-color: var(--remote-color); height: 100%; display: inline-block;
+           border: var(--main-border-width) solid var(--main-border-color); border-radius: calc(var(--remotewidth) / 7.5);
+           padding: calc(var(--remotewidth) / 37.5) calc(var(--remotewidth) / 15.2) calc(var(--remotewidth) / 25) calc(var(--remotewidth) / 15.2);
       }
        .grid-container-power {
-           display: grid;
-           grid-template-columns: 1fr 1fr 1fr;
-           grid-template-rows: 1fr;
-           background-color: transparent;
-           overflow: hidden;
-           width: var(--remotewidth);
-           height: calc(var(--remotewidth) / 3);
+           display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr;
+           width: var(--remotewidth); height: calc(var(--remotewidth) / 4);
       }
        .grid-container-cursor {
-           display: grid;
-           grid-template-columns: 1fr 1fr 1fr;
-           grid-template-rows: 1fr 1fr 1fr;
-           overflow: hidden;
-           height: var(--remotewidth);
-           width: var(--remotewidth);
-           grid-template-areas: "menu up input" "left ok right" "back down exit" 
+           display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr 1fr;
+           height: var(--remotewidth); width: var(--remotewidth);
+           grid-template-areas: "menu up input" "left ok right" "back down exit";
       }
         .grid-container-color_btn{
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            grid-template-rows: auto;
-            background-color: transparent;
-            width: calc(var(--remotewidth) / 1.03);
-            height: calc(var(--remotewidth) / 10);
-            overflow: hidden;
-            margin: auto;
+            display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+            width: calc(var(--remotewidth) / 1.03); height: calc(var(--remotewidth) / 10); margin: 5px auto;
         }
         .grid-container-volume-channel-control {
-           display: grid;
-           grid-template-columns: 1fr 1fr 1fr;
-           grid-template-rows: 1fr 1fr 1fr;
-           background-color: transparent;
-           width: var(--remotewidth);
-           height: calc(var(--remotewidth) / 1.4);
-           overflow: hidden;
-           margin-top: 0px; /* Leerraum entfernt, damit alles nach oben rutscht */
+           display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr 1fr;
+           width: var(--remotewidth); height: calc(var(--remotewidth) / 1.6);
+           margin-top: calc(var(--remotewidth) / -15); /* Zieht die Tasten nach oben */
       }
-       .shape {
-           grid-column-start: 1;
-           grid-column-end: 4;
-           grid-row-start: 1;
-           grid-row-end: 4;
-           padding: 5px;
-      }
+       .shape { grid-column: 1 / 4; grid-row: 1 / 4; padding: 5px; }
        .item_menu { grid-area: menu; }
        .item_up { grid-area: up; }
        .item_input { grid-area: input; }
@@ -214,60 +154,19 @@ ${colorButtons ? html`
        .item_right { grid-area: right; }
        .item_down { grid-area: down; }
        
-       ha-icon {
-           width: calc(var(--remotewidth) / 10.8);
-           height: calc(var(--remotewidth) / 10.8); 
-      }
+       ha-icon { width: calc(var(--remotewidth) / 10.8); height: calc(var(--remotewidth) / 10.8); }
        .btn {
-           background-color: var(--remote-button-color);
-           color: var(--remote-text-color);
-           font-size: calc(var(--remotewidth) / 18.75);
-           width: 70%;
-           height: 70%;
-           border-width: 0px;
-           border-radius: 50%;
-           margin: auto;
-           place-items: center;
-           display: inline-block;
-           cursor: pointer;
-      }
-        .btn-color {
-            background-color: var(--remote-button-color);
-            color: var(--remote-text-color);
-            width: 70%;
-            height: 55%;
-            border-width: 0px;
-            border-radius: calc(var(--remotewidth) / 10);
-            margin: auto;
-            place-items: center;
-            cursor: pointer;
-        }   
-       .flat-high {
-           width: 70%;
-           height: 37%;
+           background-color: var(--remote-button-color); color: var(--remote-text-color);
+           font-size: calc(var(--remotewidth) / 18.75); width: 70%; height: 70%;
+           border: 0; border-radius: 50%; margin: auto; cursor: pointer;
       }
        .btn-flat {
-           background-color: var(--remote-button-color);
-           color: var(--remote-text-color);
-           font-size: calc(var(--remotewidth) / 18.75);
-           border-width: 0px;
-           border-radius: calc(var(--remotewidth) / 10);
-           margin: auto;
-           display :grid;
-           place-items: center;
-           display: inline-block;
-           cursor: pointer;
+           background-color: var(--remote-button-color); color: var(--remote-text-color);
+           border: 0; border-radius: calc(var(--remotewidth) / 10); margin: auto; cursor: pointer;
       }
-       .bnt_ok {
-           width: 100%;
-           height:100%;
-           font-size: calc(var(--remotewidth) / 16.6);
-      }
-       .title {
-          display: block;
-          text-align: center;
-          font-weight: bold
-      }
+       .flat-high { width: 70%; height: 45%; }
+       .bnt_ok { width: 100%; height:100%; font-size: calc(var(--remotewidth) / 16.6); }
+       .title { display: block; text-align: center; font-weight: bold; padding-bottom: 5px; }
   `;
     }
 }
