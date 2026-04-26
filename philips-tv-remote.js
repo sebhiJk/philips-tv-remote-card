@@ -14,25 +14,23 @@ class philipsTvRemote extends LitElement {
         const stateObj = this.hass.states[this.config.entity];
         const colorButtons = this.config.color_buttons === "enable";
 
-        const borderWidth = this.config.dimensions && this.config.dimensions.border_width ? this.config.dimensions.border_width : "1px";
         const scale = this.config.dimensions && this.config.dimensions.scale ? this.config.dimensions.scale : 1;
         const remoteWidth = Math.round(scale * 300) + "px";
 
         const backgroundColor = this.config.colors && this.config.colors.background ? this.config.colors.background : "var( --ha-card-background, var(--card-background-color, white) )";
-        const borderColor = this.config.colors && this.config.colors.border ? this.config.colors.border: "var(--primary-text-color)";
         const buttonColor = this.config.colors && this.config.colors.buttons ? this.config.colors.buttons : "var(--secondary-background-color)";
         const textColor = this.config.colors && this.config.colors.texts ? this.config.colors.texts : "var(--primary-text-color)";
         
         return html`
             <div class="card">
-            <div class="page" style="--remote-button-color: ${buttonColor}; --remote-text-color: ${textColor}; --remote-color: ${backgroundColor}; --remotewidth: ${remoteWidth};  --main-border-color: ${borderColor}; --main-border-width: ${borderWidth}">
+            <div class="page" style="--remote-button-color: ${buttonColor}; --remote-text-color: ${textColor}; --remote-color: ${backgroundColor}; --remotewidth: ${remoteWidth};">
                   ${this.config.name
                   ? html` <span class="title"> ${this.config.name} </span> `
                   : ""}
                 
                   <div class="grid-container-cursor">
                       <div class="shape">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 79"><path d="m 30 15 a 10 10 0 0 1 20 0 a 15 15 0 0 0 15 15 a 10 10 0 0 1 0 20 a 15 15 0 0 0 -15 15 a 10 10 0 0 1 -20 0 a 15 15 0 0 0 -15 -15 a 10 10 0 0 1 0 -20 a 15 15 0 0 0 15 -15" fill="var(--remote-button-color)" stroke="lightgray" stroke-width="1.5" /></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 79"><path d="m 30 15 a 10 10 0 0 1 20 0 a 15 15 0 0 0 15 15 a 10 10 0 0 1 0 20 a 15 15 0 0 0 -15 15 a 10 10 0 0 1 -20 0 a 15 15 0 0 0 -15 -15 a 10 10 0 0 1 0 -20 a 15 15 0 0 0 15 -15" fill="var(--remote-button-color)" /></svg>
                       </div> 
                       
                       <button class="btn ripple item_vol_up" @click=${() => this._command("VolumeUp")}><ha-icon icon="mdi:plus"/></button>
@@ -46,11 +44,11 @@ class philipsTvRemote extends LitElement {
                       <button class="btn ripple item_options" @click=${() => this._command("Options")}><ha-icon icon="mdi:format-list-numbered"/></button>
                       <button class="btn ripple item_back" @click=${() => this._command("Back")}><ha-icon icon="mdi:undo-variant"/></button>
 
-                      <button class="btn ripple item_up" style="background-color: transparent; color: coral;" @click=${() => this._command("CursorUp")}><ha-icon icon="mdi:chevron-up"/></button>
-                      <button class="btn ripple item_left" style="background-color: transparent; color: coral;" @click=${() => this._command("CursorLeft")}><ha-icon icon="mdi:chevron-left"/></button>
-                      <button class="btn bnt_ok ripple item_ok" style="background-color: transparent; color: coral;" @click=${() => this._command("Confirm")}>OK</button>
-                      <button class="btn ripple item_right" style="background-color: transparent; color: coral;" @click=${() => this._command("CursorRight")}><ha-icon icon="mdi:chevron-right"/></button>
-                      <button class="btn ripple item_down" style="background-color: transparent; color: coral;" @click=${() => this._command("CursorDown")}><ha-icon icon="mdi:chevron-down"/></button>
+                      <button class="btn ripple item_up" style="background-color: transparent; color: turquoise;" @click=${() => this._command("CursorUp")}><ha-icon icon="mdi:chevron-up"/></button>
+                      <button class="btn ripple item_left" style="background-color: transparent; color: turquoise;" @click=${() => this._command("CursorLeft")}><ha-icon icon="mdi:chevron-left"/></button>
+                      <button class="btn bnt_ok ripple item_ok" style="background-color: transparent; color: turquoise;" @click=${() => this._command("Confirm")}>OK</button>
+                      <button class="btn ripple item_right" style="background-color: transparent; color: turquoise;" @click=${() => this._command("CursorRight")}><ha-icon icon="mdi:chevron-right"/></button>
+                      <button class="btn ripple item_down" style="background-color: transparent; color: turquoise;" @click=${() => this._command("CursorDown")}><ha-icon icon="mdi:chevron-down"/></button>
 
                       <button class="btn ripple item_ch_up" @click=${() => this._command("ChannelStepUp")}><ha-icon icon="mdi:chevron-up"/></button>
                       <button class="btn item_ch_lbl" style="cursor: default;">P</button>
@@ -121,17 +119,17 @@ class philipsTvRemote extends LitElement {
        .card { display: flex; justify-content: center; width: 100%; height: 100%; }
        .page {
            background-color: var(--remote-color); height: 100%; display: inline-block;
-           border: var(--main-border-width) solid var(--main-border-color); border-radius: calc(var(--remotewidth) / 7.5);
+           /* ÄUSSERER RAHMEN ENTFERNT */
+           border: 0; 
+           border-radius: calc(var(--remotewidth) / 7.5);
            padding: calc(var(--remotewidth) / 37.5) calc(var(--remotewidth) / 15.2) calc(var(--remotewidth) / 25) calc(var(--remotewidth) / 15.2);
       }
       
-       /* 5x3 Grid für das gesamte Haupt-Layout */
        .grid-container-cursor {
            display: grid;
            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
            grid-template-rows: 1fr 1fr 1fr;
            width: var(--remotewidth);
-           /* Höhe weiter reduziert, um der Streckung entgegenzuwirken */
            height: calc(var(--remotewidth) * 0.55);
            margin: auto;
            position: relative;
@@ -141,32 +139,27 @@ class philipsTvRemote extends LitElement {
             "vol_down options  down back    ch_down";
       }
       
-       /* Steuerkreuz Form: Seitenverhältnis fixiert! */
        .shape { 
            grid-column: 2 / 5; grid-row: 1 / 4; 
            display: flex; align-items: center; justify-content: center; 
        }
        .shape svg { 
            width: 95%; 
-           height: auto; /* Sorgt dafür, dass es proportional bleibt und nicht gestreckt wird */
-           max-height: 85%; /* Verhindert, dass es zu hoch wird */
+           height: auto;
+           max-height: 85%;
        }
        
-       /* Overlay Rahmen für Volume und Program (Pillenform) */
        .vol-bg { grid-row: 1 / 4; grid-column: 1; border: 2px solid lightgray; border-radius: 50px; width: 85%; height: 95%; align-self: center; justify-self: center; pointer-events: none; z-index: 2; box-sizing: border-box; }
        .ch-bg { grid-row: 1 / 4; grid-column: 5; border: 2px solid lightgray; border-radius: 50px; width: 85%; height: 95%; align-self: center; justify-self: center; pointer-events: none; z-index: 2; box-sizing: border-box; }
        
-       /* Lautstärke-Wippe Links */
        .item_vol_up { grid-area: vol_up; border-radius: 50px 50px 0 0; width: 75%; height: 100%; margin: 0 auto; }
        .item_vol_mute { grid-area: vol_mute; border-radius: 0; width: 75%; height: 100%; margin: 0 auto; }
        .item_vol_down { grid-area: vol_down; border-radius: 0 0 50px 50px; width: 75%; height: 100%; margin: 0 auto; }
        
-       /* Programm-Wippe Rechts */
        .item_ch_up { grid-area: ch_up; border-radius: 50px 50px 0 0; width: 75%; height: 100%; margin: 0 auto; }
        .item_ch_lbl { grid-area: ch_lbl; border-radius: 0; width: 75%; height: 100%; margin: 0 auto; font-weight: bold; font-size: calc(var(--remotewidth) / 15); }
        .item_ch_down { grid-area: ch_down; border-radius: 0 0 50px 50px; width: 75%; height: 100%; margin: 0 auto; }
 
-       /* Basis Button Styles */
        .btn {
            background-color: var(--remote-button-color); color: var(--remote-text-color);
            width: 75%; height: 75%;
@@ -175,20 +168,17 @@ class philipsTvRemote extends LitElement {
            box-sizing: border-box;
       }
 
-       /* Ecken - Einzelrahmen */
        .btn.item_source { grid-area: source; border: 2px solid lightgray; }
        .btn.item_power { grid-area: power; border: 2px solid lightgray; }
        .btn.item_options { grid-area: options; border: 2px solid lightgray; }
        .btn.item_back { grid-area: back; border: 2px solid lightgray; }
 
-       /* Steuerkreuz */
        .item_up { grid-area: up; }
        .item_left { grid-area: left; }
        .item_ok { grid-area: ok; }
        .item_right { grid-area: right; }
        .item_down { grid-area: down; }
 
-       /* Home Button Bereich */
        .grid-container-home {
            display: flex; justify-content: center; margin-top: calc(var(--remotewidth) / 12);
        }
